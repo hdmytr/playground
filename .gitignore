@@ -4,6 +4,7 @@
 **/*.swo
 .DS_Store
 mock
+certs
 
 # Added by cargo
 
