@@ -1,11 +1,15 @@
+.idea/
+.vscode/
+
 /target/
 **/*.rs.bk
 **/*.swp
 **/*.swo
 .DS_Store
+Thumbs.db
 mock
 certs
 
 # Added by cargo
-
-/target
+*target*
+*dist*

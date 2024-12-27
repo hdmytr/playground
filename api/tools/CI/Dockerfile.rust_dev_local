@@ -1,4 +1,4 @@
-FROM rust:1.83
+FROM rust:1.83 AS rust_dev_local
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -18,7 +18,6 @@ RUN apt-get update && \
     certbot \
     && rm -rf /var/lib/apt/lists/*
 
-# build caching
 RUN cargo install sccache
 
 ENV RUSTC_WRAPPER=sccache \
@@ -26,3 +25,4 @@ ENV RUSTC_WRAPPER=sccache \
     CARGO_BUILD_JOBS=default \
     RUSTFLAGS="-C debuginfo=2 -C link-arg=-fuse-ld=lld"
 
+# docker build -t rust_dev_local:1_83 -f tools/CI/Dockerfile.rust_dev_local .

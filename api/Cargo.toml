@@ -1,0 +1,51 @@
+[package]
+name = "api"
+version = "0.0.0"
+edition = "2021" # Specifies the Rust edition to use (2021 in this case)
+
+[dependencies]
+axum = { version = "0.6", features = ["json"] }           #  async web applications
+hyper = { version = "0.14", features = ["full"] }         #  HTTP for Axum
+tokio = { version = "1.33", features = ["full"] } # concurency
+tracing = "0.1"        #  logging
+anyhow = "1.0"         # error handling 
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
+serde = { version = "1.0", features = ["derive"] } # JSON serialization/deserialization
+rustls = "0.21"
+tokio-rustls = "0.23"
+rustls-pemfile = "1.0"
+tower-http = { version = "0.4", features = ["cors"] }
+
+[dev-dependencies]
+rstest = "0.17.0"    # Example: parameterized tests
+
+[profile.dev]
+incremental = false      # Disable incremental builds (compatible with sccache)
+debug = 2                # Include maximum debug information
+overflow-checks = true   # Enable runtime checks for integer overflows
+codegen-units = 16       # Use more codegen units for faster builds
+
+[profile.release]
+opt-level = 3            # Maximize optimizations for release builds
+debug = 1                # Include minimal debug information (for production debugging)
+lto = "thin"             # Use Thin Link-Time Optimization for smaller binaries
+codegen-units = 1        # Optimize for binary size and runtime performance
+panic = "unwind"         # Enable panic backtraces for debugging in production
+overflow-checks = false  # Disable overflow checks for performance
+
+[profile.test]
+opt-level = 0            # Disable optimizations for faster test iterations
+debug = 2                # Include maximum debug information
+overflow-checks = true   # Enable runtime checks for integer overflows
+incremental = false      # Disable incremental builds (compatible with sccache)
+
+[profile.bench]
+opt-level = 3            # Maximize optimizations for benchmarking
+debug = 1                # Include minimal debug information for analysis
+lto = "thin"             # Use Thin Link-Time Optimization for faster linking
+codegen-units = 1        # Optimize for runtime performance
+
+[profile.deploy]
+inherits = "release"     # Inherit settings from the release profile
+lto = true               # Use full Link-Time Optimization for smallest and fastest binary
+strip = true             # Remove all debug symbols for smaller binary size

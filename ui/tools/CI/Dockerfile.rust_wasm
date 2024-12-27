@@ -1,0 +1,12 @@
+
+FROM rust_dev_local:1_83
+
+
+RUN cargo install trunk
+RUN rustup target add wasm32-unknown-unknown
+
+
+ENV RUSTFLAGS="-C debuginfo=2"
+
+
+# docker build -t rust_wasm -f tools/CI/Dockerfile.rust_wasm .
