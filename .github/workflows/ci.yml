@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      # - name: Cargo fmt (format check)
+      #   run: |
+      #     cargo fmt --all -- --check
+
+      # - name: Cargo clippy (linter)
+      #   run: |
+      #     cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Build (debug mode)
+        run: |
+          cargo build --all
+
+      - name: Run unit tests
+        run: |
+          cargo test --all -- --nocapture
+
+      # - name: Integration tests
+      #   run: |
+      #     docker-compose -f docker-compose.yml up -d
+      #     # run your test scripts / commands
+      #     docker-compose down
+
+      # - name: Build production images
+      #   run: |
+      #     docker build -f api/tools/CI/Dockerfile.prod -t org/api:latest ./api
+      #     docker build -f ui/tools/CI/Dockerfile.prod -t org/ui:latest ./ui
